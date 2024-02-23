@@ -114,6 +114,11 @@ public class BasicController {
         return "basic/comments";
     }
 
+    @GetMapping("/block")
+    private String block(Model model) {
+        addUsers(model);
+        return "basic/condition";
+    }
 
 
 
