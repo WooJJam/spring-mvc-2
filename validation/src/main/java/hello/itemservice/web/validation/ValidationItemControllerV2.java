@@ -177,6 +177,11 @@ public class ValidationItemControllerV2 {
         log.info("objectName = {}", bindingResult.getObjectName());
         log.info("target = {}", bindingResult.getTarget());
 
+        if (bindingResult.hasErrors()) {
+            log.info("error = {}", bindingResult);
+            return "validation/v2/addForm";
+        }
+
         // 검증 로직
 //        ValidationUtils.rejectIfEmptyOrWhitespace(bindingResult, "itemName", "required");
 
@@ -195,6 +200,10 @@ public class ValidationItemControllerV2 {
         if (item.getQuantity() == null || item.getQuantity() >= 9999) {
 //            bindingResult.addError(new FieldError("item", "quantity", item.getQuantity(), false, new String[]{"max.item.quantity"}, new Object[]{9999},null));
             bindingResult.rejectValue("quantity", "max", new Object[]{9999}, null);
+        }
+
+        if (item.getQuantity() == null || item.getQuantity() < 0) {
+            bindingResult.rejectValue("quantity", "min", new Object[]{0}, null);
         }
 
         // 특정 필드가 아닌 복합 룰 검증
